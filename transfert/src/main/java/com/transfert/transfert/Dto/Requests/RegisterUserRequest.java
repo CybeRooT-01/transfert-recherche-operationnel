@@ -36,6 +36,9 @@ public record RegisterUserRequest(
 
         @NotBlank (message = "Le numero de Carte d'identité est obligatoire")
         @UniqueIdNumber(message = "Le numero de Carte d'identié est deja utilisé")
-        String idNumber
+        String idNumber,
+
+        @NotBlank(message = "le code PIN est necessaire")
+        String pinHash
 ) {}
 

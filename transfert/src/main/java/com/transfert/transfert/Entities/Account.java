@@ -2,6 +2,7 @@ package com.transfert.transfert.Entities;
 
 
 import com.transfert.transfert.Enums.AccountStatus;
+import com.transfert.transfert.Enums.SubscriptionType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
@@ -27,8 +28,15 @@ public class Account extends BaseModel{
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private Users user;
 
-    @Column(name = "account_number", length = 20, unique = true, nullable = false)
+    @Column(name = "account_number", length = 255, unique = true, nullable = false)
     private String accountNumber;
+
+    @Column(name ="failed_attempts")
+    private Integer failedAttempts = 0;
+
+    @Column(name="is_company_account")
+    private Boolean isCompanyAccount = false;
+
 
     @Column(precision = 15, scale = 2)
     private BigDecimal balance = BigDecimal.ZERO;
@@ -47,6 +55,9 @@ public class Account extends BaseModel{
 
     @Column(name = "pin_hash", nullable = false)
     private String pinHash;
+
+    @Column(name = "subscription_type")
+    private SubscriptionType subscriptionType = SubscriptionType.FREE;
 
     @OneToMany(mappedBy = "senderAccount", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Transaction> sentTransactions = new ArrayList<>();

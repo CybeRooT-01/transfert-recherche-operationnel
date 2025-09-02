@@ -1,6 +1,6 @@
 package com.transfert.transfert.Dto.Response;
 
-public record ErrorLoginResponse(
+public record ErrorResponse(
         String error
 ) {
 

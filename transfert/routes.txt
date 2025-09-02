@@ -1,0 +1,53 @@
+# ROUTES EXISTANTES
+
+# AuthController
+POST   /api/v1/auth/register        # Inscription d'un utilisateur
+POST   /api/v1/auth/login           # Connexion d'un utilisateur
+POST   /api/v1/auth/logout          # Déconnexion
+
+# UsersController
+POST   /api/v1/users/refresh-token  # Rafraîchir le token JWT
+GET    /api/v1/users                # Liste des utilisateurs
+PUT    /api/v1/users/{id}           # Modifier un utilisateur
+GET    /api/v1/users/{id}           # Détail d'un utilisateur
+DELETE /api/v1/users/{id}           # Supprimer un utilisateur
+
+
+
+# ROUTES A IMPLEMENTER
+
+# Comptes
+GET    /api/v1/accounts             # Liste des comptes
+GET    /api/v1/accounts/{id}        # Détail d'un compte
+POST   /api/v1/accounts             # Créer un compte
+PUT    /api/v1/accounts/{id}        # Modifier un compte
+DELETE /api/v1/accounts/{id}        # Supprimer un compte
+
+# Transactions
+GET    /api/v1/transactions         # Liste des transactions
+GET    /api/v1/transactions/{id}    # Détail d'une transaction
+POST   /api/v1/transactions         # Créer une transaction (transfert d'argent)
+PUT    /api/v1/transactions/{id}    # Modifier une transaction
+DELETE /api/v1/transactions/{id}    # Annuler une transaction
+
+# Reçus
+GET    /api/v1/receipts             # Liste des reçus
+GET    /api/v1/receipts/{id}        # Détail d'un reçu
+
+# Frais de transaction
+GET    /api/v1/fees                 # Liste des frais
+GET    /api/v1/fees/{id}            # Détail d'un frais
+POST   /api/v1/fees                 # Créer un frais
+PUT    /api/v1/fees/{id}            # Modifier un frais
+DELETE /api/v1/fees/{id}            # Supprimer un frais
+
+# Rôles
+GET    /api/v1/roles                # Liste des rôles
+GET    /api/v1/roles/{id}           # Détail d'un rôle
+POST   /api/v1/roles                # Créer un rôle
+PUT    /api/v1/roles/{id}           # Modifier un rôle
+DELETE /api/v1/roles/{id}           # Supprimer un rôle
+
+# Audit logs
+GET    /api/v1/audit-logs           # Liste des logs d'audit
+GET    /api/v1/audit-logs/{id}      # Détail d'un log d'audit
