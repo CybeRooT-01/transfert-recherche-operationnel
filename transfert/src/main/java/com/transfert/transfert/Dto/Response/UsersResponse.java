@@ -11,11 +11,9 @@ public record UsersResponse(
         String lastName,
         String phoneNumber,
         String Country,
-        String photoUrl,
         String idNumber,
-        String idPhotoUrl,
-        UserStatus status,
         String role,
+        UserStatus status,
         SubscriptionType subscriptionType
 ) {
 }

@@ -50,14 +50,20 @@ public class Users extends BaseModel implements UserDetails {
     @Column(name = "country")
     private String country;
 
-    @Column(name = "photo_url", nullable = true)
-    private String photoUrl;
-
     @Column(name = "id_number", unique = true, nullable = false)
     private String idNumber;
 
-    @Column(name = "id_photo_url")
-    private String idPhotoUrl;
+    @Column(name = "photo", columnDefinition = "LONGTEXT")
+    @Lob
+    private String photo;
+
+    @Column(name = "recto_cni", columnDefinition = "LONGTEXT")
+    @Lob
+    private String rectoCni;
+
+    @Column(name = "verso_cni", columnDefinition = "LONGTEXT")
+    @Lob
+    private String versoCni;
 
     @Enumerated(EnumType.STRING)
     private UserStatus status = UserStatus.ACTIVE;

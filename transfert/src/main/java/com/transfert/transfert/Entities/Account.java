@@ -53,6 +53,9 @@ public class Account extends BaseModel{
     @Column(name = "monthly_limit", precision = 15, scale = 2)
     private BigDecimal monthlyLimit = new BigDecimal("5000000.00");
 
+    @Column(name = "accumulation")
+    private BigDecimal accumulation = BigDecimal.ZERO;
+
     @Column(name = "pin_hash", nullable = false)
     private String pinHash;
 

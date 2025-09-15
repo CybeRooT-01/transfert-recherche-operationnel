@@ -9,6 +9,8 @@ import java.util.Optional;
 
 public interface AccountRepository extends JpaRepository<Account, Long> {
     Account findByUser(Optional<Users> user);
+    Account findByUserId(Long userId);
 
     Account findFirstByIsCompanyAccountTrue();
+
 }

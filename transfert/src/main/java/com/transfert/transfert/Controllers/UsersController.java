@@ -1,4 +1,5 @@
 package com.transfert.transfert.Controllers;
+import com.transfert.transfert.Dto.Response.UserByIdResponse;
 import com.transfert.transfert.Dto.Response.UsersResponse;
 import com.transfert.transfert.Entities.Users;
 import com.transfert.transfert.Services.UsersService;
@@ -35,7 +36,7 @@ public class UsersController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UsersResponse> getUser(@PathVariable("id") String id) {
+    public ResponseEntity<UserByIdResponse> getUser(@PathVariable("id") String id) {
         return usersService.getUser(id);
     }
 

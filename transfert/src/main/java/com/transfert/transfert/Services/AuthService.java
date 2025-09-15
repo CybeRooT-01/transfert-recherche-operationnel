@@ -53,6 +53,9 @@ public class AuthService {
         user.setPhoneNumber(request.phoneNumber());
         user.setCountry(request.Country());
         user.setIdNumber(request.idNumber());
+        user.setPhoto(request.photo());
+        user.setRectoCni(request.rectoCni());
+        user.setVersoCni(request.versoCni());
         user.setRole(UserRole.USER);
         userRepository.save(user);
         //creer le account relatif au user
@@ -66,9 +69,21 @@ public class AuthService {
         account.setStatus(AccountStatus.ACTIVE);
         account.setUser(user);
         accountRepository.save(account);
-
         var token = jwtService.generateToken(user);
-        return new LoginResponse(token, user.getUsername(), user.getRole().name());
+        return new LoginResponse(
+                token,
+                user.getUsername(),
+                user.getCountry(),
+                user.getEmail(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getPhoneNumber(),
+                user.getStatus(),
+                user.getSubscriptionType(),
+                user.getRole().name(),
+                user.getRectoCni(),
+                user.getVersoCni(),
+                user.getPhoto());
     }
 
     public ResponseEntity<?> login(LoginRequest request) {
@@ -89,7 +104,20 @@ public class AuthService {
                     .body(new ErrorResponse("Compte blqué veuillez contacter le service client"));
         }
 
-        return ResponseEntity.ok(new LoginResponse(token, userExist.getUsername(), userExist.getRole().name()));
+        return ResponseEntity.ok(new LoginResponse( token,
+                userExist.getUsername(),
+                userExist.getCountry(),
+                userExist.getEmail(),
+                userExist.getFirstName(),
+                userExist.getLastName(),
+                userExist.getPhoneNumber(),
+                userExist.getStatus(),
+                userExist.getSubscriptionType(),
+                userExist.getRole().name(),
+                userExist.getRectoCni(),
+                userExist.getVersoCni(),
+                userExist.getPhoto()
+        ));
     }
 
     public String getUsernameFromToken(String token) {

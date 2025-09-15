@@ -39,6 +39,15 @@ public record RegisterUserRequest(
         String idNumber,
 
         @NotBlank(message = "le code PIN est necessaire")
-        String pinHash
+        String pinHash,
+
+        @NotBlank(message = "La photo est obligatoire")
+        String photo,
+
+        @NotBlank(message = "La photo recto de la CNI est obligatoire")
+        String rectoCni,
+
+        @NotBlank(message = "La verso de la CNI est obligatoire")
+        String versoCni
 ) {}
 
