@@ -1,6 +1,7 @@
 package com.transfert.transfert.Entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.transfert.transfert.Enums.AccountStatus;
 import com.transfert.transfert.Enums.SubscriptionType;
 import jakarta.persistence.*;
@@ -62,9 +63,11 @@ public class Account extends BaseModel{
     @Column(name = "subscription_type")
     private SubscriptionType subscriptionType = SubscriptionType.FREE;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "senderAccount", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Transaction> sentTransactions = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "receiverAccount", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Transaction> receivedTransactions = new ArrayList<>();
 }

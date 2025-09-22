@@ -13,9 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +39,6 @@ public class AccountService {
         boolean isPinCorrect = passwordEncoder.matches(pin, account.getPinHash());
         if (!isPinCorrect) {
             account.setFailedAttempts(account.getFailedAttempts() + 1);
-
             if (account.getFailedAttempts() >= MAX_ATTEMPTS) {
                 account.setStatus(AccountStatus.FROZEN);
                 response.put("message", "PIN incorrect, compte bloqué, contactez le service client");
@@ -50,20 +47,35 @@ public class AccountService {
                 response.put("message", "PIN incorrect");
                 response.put("tentatives restants", remainingAttempts);
             }
-
             accountRepository.save(account);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
         account.setFailedAttempts(0);
         accountRepository.save(account);
-        var accountDetails = new AccountResponse(
-                account.getAccountNumber(),
-                account.getBalance(),
-                account.getCurrency(),
-                account.getSubscriptionType(),
-                account.getDailyLimit(),
-                account.getMonthlyLimit()
-        );
+        Map<String, Object> accountDetails = new HashMap<>();
+        accountDetails.put("accountNumber", account.getAccountNumber());
+        accountDetails.put("balance", account.getBalance());
+        accountDetails.put("currency", account.getCurrency());
+        accountDetails.put("subscriptionType", account.getSubscriptionType());
+        accountDetails.put("dailyLimit", account.getDailyLimit());
+        accountDetails.put("monthlyLimit", account.getMonthlyLimit());
+
+        // Ajout des transactions envoyées (DTO simplifié)
+        List<Map<String, Object>> sentTransactions = new ArrayList<>();
+        if (account.getSentTransactions() != null) {
+            account.getSentTransactions().forEach(tx -> {
+                Map<String, Object> txDto = new HashMap<>();
+                txDto.put("id", tx.getId());
+                txDto.put("transactionNumber", tx.getTransactionNumber());
+                txDto.put("amount", tx.getAmount());
+                txDto.put("createdAt", tx.getCreatedAt());
+                txDto.put("status", tx.getStatus());
+                // Ajoute d'autres champs utiles mais PAS le senderAccount ou user complet
+                sentTransactions.add(txDto);
+            });
+        }
+        accountDetails.put("sentTransactions", sentTransactions);
+
         response.put("message", "PIN validé");
         response.put("account", accountDetails);
         return ResponseEntity.ok(response);
