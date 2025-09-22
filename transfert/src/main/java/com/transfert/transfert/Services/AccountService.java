@@ -62,9 +62,7 @@ public class AccountService {
                 account.getCurrency(),
                 account.getSubscriptionType(),
                 account.getDailyLimit(),
-                account.getMonthlyLimit(),
-                account.getSentTransactions(),
-                account.getReceivedTransactions()
+                account.getMonthlyLimit()
         );
         response.put("message", "PIN validé");
         response.put("account", accountDetails);
@@ -88,9 +86,7 @@ public class AccountService {
                 account.getCurrency(),
                 account.getSubscriptionType(),
                 account.getDailyLimit(),
-                account.getMonthlyLimit(),
-                account.getSentTransactions(),
-                account.getReceivedTransactions()
+                account.getMonthlyLimit()
                 )));
     }
 }
