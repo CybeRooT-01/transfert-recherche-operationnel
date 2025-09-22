@@ -18,6 +18,26 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class AccountService {
+    @org.springframework.scheduling.annotation.Scheduled(cron = "0 0 0 1 * *") // chaque 1er du mois à minuit
+    public void checkPremiumRenewal() {
+        var premiumAccounts = accountRepository.findAll().stream()
+            .filter(acc -> acc.getSubscriptionType() == SubscriptionType.PREMIUM)
+            .toList();
+        for (Account account : premiumAccounts) {
+            boolean renewed = false;
+            if (account.getSentTransactions() != null) {
+                renewed = account.getSentTransactions().stream()
+                    .anyMatch(tx -> tx.getType() != null && tx.getType().name().equalsIgnoreCase("RENEWAL")
+                        && tx.getCreatedAt() != null
+                        && tx.getCreatedAt().getMonthValue() == java.time.LocalDate.now().getMonthValue()
+                        && tx.getCreatedAt().getYear() == java.time.LocalDate.now().getYear());
+            }
+            if (!renewed) {
+                account.setSubscriptionType(SubscriptionType.FREE);
+                accountRepository.save(account);
+            }
+        }
+    }
 
     private final AccountRepository accountRepository;
     private final AuthService authService;
