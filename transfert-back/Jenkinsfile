@@ -1,0 +1,50 @@
+@Library('M1\_uvs\_sharedlib') \_
+
+pipeline {
+agent any
+
+environment {
+    APP_NAME = 'transfert-back'
+    ENV = 'dev'
+    REGISTRY = 'Transfertregistry:30500'
+}
+
+stages {
+    stage('Checkout') {
+        steps {
+            checkoutRepo(
+                repoUrl: 'https://github.com/CybeRooT-01/transfert-recherche-operationnel.git',
+                branch: 'main'
+            )
+        }
+    }
+
+    stage('Build App') {
+        steps {
+            buildBackendApp()
+        }
+    }
+
+    stage('Docker Build & Push') {
+        steps {
+            dockerBuildAndPush(
+                registry: "${REGISTRY}",
+                imageName: "${APP_NAME}"
+            )
+        }
+    }
+
+    stage('Deploy') {
+        steps {
+            deployArgoCD(appName: "${APP_NAME}")
+        }
+    }
+}
+
+post {
+    always {
+        postAction(currentBuild.currentResult)
+    }
+}
+
+}

@@ -1,0 +1,31 @@
+#claire et precis juste expose argocd avec son cli avec grpc http/s etc... 
+#on peut facilement installer le CLI argo sur la doc officiel
+apiVersion: v1
+kind: Service
+metadata:
+  name: argocd-server-nodeport
+  namespace: argocd
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/name: argocd-server
+    app.kubernetes.io/part-of: argocd
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+    nodePort: 30080
+    protocol: TCP
+  - name: https
+    port: 443
+    targetPort: 8080
+    nodePort: 30443
+    protocol: TCP
+  - name: grpc
+    port: 50051
+    targetPort: 8080
+    nodePort: 30090
+    protocol: TCP
+  selector:
+    app.kubernetes.io/name: argocd-server
