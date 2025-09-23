@@ -47,6 +47,7 @@ public class UsersService {
         }
         var newToken = authService.generateToken(userOpt.get());
         return ResponseEntity.ok(new LoginResponse(
+                userOpt.get().getId(),
                 newToken,
                 userOpt.get().getRole().name(),
                 userOpt.get().getUsername(),

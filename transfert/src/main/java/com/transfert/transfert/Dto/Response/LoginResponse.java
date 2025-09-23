@@ -4,6 +4,7 @@ import com.transfert.transfert.Enums.SubscriptionType;
 import com.transfert.transfert.Enums.UserStatus;
 
 public record LoginResponse(
+        Long id,
         String token,
         String username,
         String country,

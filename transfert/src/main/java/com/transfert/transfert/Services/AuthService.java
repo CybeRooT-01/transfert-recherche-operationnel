@@ -71,6 +71,7 @@ public class AuthService {
         accountRepository.save(account);
         var token = jwtService.generateToken(user);
         return new LoginResponse(
+                user.getId(),
                 token,
                 user.getUsername(),
                 user.getCountry(),
@@ -104,7 +105,9 @@ public class AuthService {
                     .body(new ErrorResponse("Compte blqué veuillez contacter le service client"));
         }
 
-        return ResponseEntity.ok(new LoginResponse( token,
+        return ResponseEntity.ok(new LoginResponse(
+                userExist.getId(),
+                token,
                 userExist.getUsername(),
                 userExist.getCountry(),
                 userExist.getEmail(),
