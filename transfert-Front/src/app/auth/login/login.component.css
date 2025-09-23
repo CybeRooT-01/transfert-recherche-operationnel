@@ -1,0 +1,7 @@
+.register-link {
+  transition: color 0.3s;
+}
+
+.register-link:hover {
+  color: #FF7900;
+}

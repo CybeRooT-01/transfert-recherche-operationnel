@@ -1,0 +1,13 @@
+.cursor-pointer span {
+  color: #000;
+  transition: color 0.3s ease;
+}
+
+.cursor-pointer:hover span {
+  color: #e1a91c;
+}
+
+.active-link span {
+  color: #e1a91c;
+  font-weight: bold;
+}

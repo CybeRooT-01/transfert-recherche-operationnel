@@ -1,0 +1,19 @@
+{
+  "SETTINGS": "Settings",
+  "SETTINGS_DESC": "Manage your preferences and app settings",
+  "GENERAL_PREF": "General Preferences",
+  "LANGUAGE": "Language",
+  "NOTIFICATIONS": "Notifications",
+  "NOTIF_TRANSFERS": "Receive notifications for transfers",
+  "NOTIF_PROMOS": "Receive notifications for promotions",
+  "ACCOUNT": "Account",
+  "ACCOUNT_TYPE": "Account Type",
+  "FREE": "Free",
+  "PREMIUM": "Premium",
+  "UPGRADE": "Upgrade to Premium",
+  "DOWNGRADE": "Downgrade to Free",
+  "ARCHIVE": "Archive my account",
+  "ARCHIVE_INFO": "Archiving will temporarily disable your account.",
+  "CONFIRM": "Confirm",
+  "CANCEL": "Cancel"
+}

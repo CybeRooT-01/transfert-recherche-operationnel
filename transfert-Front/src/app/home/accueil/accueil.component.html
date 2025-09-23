@@ -1,0 +1,131 @@
+<div class="w-full h-full p-6 flex flex-col gap-8">
+
+  <div class="flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-gray-800">
+      Bienvenue sur <span class="text-[#e1a91c]">Taf Taf</span>
+    </h1>
+    <span class="text-gray-600 text-sm">Gérez vos finances en toute simplicité</span>
+  </div>
+
+  <div class="grid grid-cols-3 gap-6">
+
+    <div
+      class="bg-white shadow-md rounded-lg p-4 flex flex-col items-center gap-4 cursor-pointer hover:shadow-lg transition" (click)="openModal('depot')">
+      <i class="material-icons text-[#e1a91c] text-5xl">account_balance_wallet</i>
+      <h2 class="text-lg font-semibold text-gray-800">Dépôt</h2>
+      <p class="text-sm text-gray-600 text-center">Ajoutez des fonds à votre compte en toute sécurité.</p>
+      <button class="bg-[#e1a91c] text-white font-semibold py-2 px-4 rounded">Faire un dépôt</button>
+    </div>
+
+    <div
+      class="bg-white shadow-md rounded-lg p-4 flex flex-col items-center gap-4 cursor-pointer hover:shadow-lg transition"  (click)="openModal('retrait')">
+      <i class="material-icons text-[#e1a91c] text-5xl">money_off</i>
+      <h2 class="text-lg font-semibold text-gray-800">Retrait</h2>
+      <p class="text-sm text-gray-600 text-center">Retirez vos fonds facilement et à tout moment.</p>
+      <button class="bg-[#e1a91c] text-white font-semibold py-2 px-4 rounded">Faire un retrait</button>
+    </div>
+
+    <div
+      class="bg-white shadow-md rounded-lg p-4 flex flex-col items-center gap-4 cursor-pointer hover:shadow-lg transition" (click)="openModal('transfert')">
+      <i class="material-icons text-[#e1a91c] text-5xl">send</i>
+      <h2 class="text-lg font-semibold text-gray-800">Transfert</h2>
+      <p class="text-sm text-gray-600 text-center">Envoyez de l'argent à vos proches en quelques clics.</p>
+      <button class="bg-[#e1a91c] text-white font-semibold py-2 px-4 rounded">Faire un transfert</button>
+    </div>
+
+  </div>
+
+  <!-- Section des statistiques (optionnel) -->
+  <div class="bg-gray-100 p-4 rounded-lg shadow-md">
+    <h2 class="text-lg font-semibold text-gray-800 mb-4">Statistiques rapides</h2>
+    <div class="grid grid-cols-3 gap-6">
+      <div class="flex flex-col items-center">
+        <span class="text-2xl font-bold text-[#e1a91c]">10,000 F CFA</span>
+        <span class="text-sm text-gray-600">Solde actuel</span>
+      </div>
+      <div class="flex flex-col items-center">
+        <span class="text-2xl font-bold text-[#e1a91c]">5</span>
+        <span class="text-sm text-gray-600">Transferts réalisés</span>
+      </div>
+      <div class="flex flex-col items-center">
+        <span class="text-2xl font-bold text-[#e1a91c]">2</span>
+        <span class="text-sm text-gray-600">Retraits effectués</span>
+      </div>
+    </div>
+  </div>
+
+
+
+
+</div>
+
+<div *ngIf="currentModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white rounded-lg w-[520px] max-w-[95%] p-6 relative">
+    <button (click)="closeModal()" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800">✕</button>
+
+    <!-- Dépôt -->
+    <ng-container *ngIf="currentModal === 'depot'">
+      <h2 class="text-xl font-semibold mb-4">Faire un Dépôt</h2>
+      <form (ngSubmit)="submitDepot()" class="flex flex-col gap-4">
+        <div>
+          <label class="block text-sm text-gray-600">Montant</label>
+          <input type="number" [(ngModel)]="amount" name="depotMontant" required
+            class="w-full border rounded-lg p-2" placeholder="Entrez le montant" />
+        </div>
+
+        <div class="flex justify-end gap-3">
+          <button type="button" (click)="closeModal()" class="py-2 px-4 rounded border">Annuler</button>
+          <button type="submit" class="bg-[#e1a91c] text-white py-2 px-4 rounded">Valider le dépôt</button>
+        </div>
+      </form>
+    </ng-container>
+
+    <!-- Retrait -->
+    <ng-container *ngIf="currentModal === 'retrait'">
+      <h2 class="text-xl font-semibold mb-4">Faire un Retrait</h2>
+      <form (ngSubmit)="submitRetrait()" class="flex flex-col gap-4">
+        <div>
+          <label class="block text-sm text-gray-600">Montant</label>
+          <input type="number" [(ngModel)]="retraitMontant" name="retraitMontant" required
+            class="w-full border rounded-lg p-2" placeholder="Entrez le montant" />
+        </div>
+        <div class="flex justify-end gap-3">
+          <button type="button" (click)="closeModal()" class="py-2 px-4 rounded border">Annuler</button>
+          <button type="submit" class="bg-[#e1a91c] text-white py-2 px-4 rounded">Valider le retrait</button>
+        </div>
+      </form>
+    </ng-container>
+
+  <!-- Transfert -->
+  <ng-container *ngIf="currentModal === 'transfert'">
+    <h2 class="text-xl font-semibold mb-4">Faire un Transfert</h2>
+    <form (ngSubmit)="submitTransfert()" class="flex flex-col gap-4">
+      <div>
+        <label class="block text-sm text-gray-600">Numéro du destinataire</label>
+        <input type="tel" [(ngModel)]="transNumero" name="transNumero" required class="w-full border rounded-lg p-2"
+          placeholder="Entrez le numéro" />
+      </div>
+
+      <div>
+        <label class="block text-sm text-gray-600">Montant envoyé</label>
+        <input type="number" [(ngModel)]="transMontantSend" name="transMontantSend" (ngModelChange)="updateFromSend()"
+          required class="w-full border rounded-lg p-2" placeholder="Entrez le montant envoyé" />
+      </div>
+
+      <div>
+        <label class="block text-sm text-gray-600">Montant reçu</label>
+        <input type="number" [(ngModel)]="transMontantRecept" name="transMontantRecept"
+          (ngModelChange)="updateFromRecept()" required class="w-full border rounded-lg p-2"
+          placeholder="Entrez le montant reçu" />
+      </div>
+
+      <div class="flex justify-end gap-3">
+        <button type="button" (click)="closeModal()" class="py-2 px-4 rounded border">Annuler</button>
+        <button type="submit" class="bg-[#e1a91c] text-white py-2 px-4 rounded">Envoyer le transfert</button>
+      </div>
+    </form>
+  </ng-container>
+
+
+  </div>
+</div>

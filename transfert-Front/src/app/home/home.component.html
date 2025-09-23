@@ -1,0 +1,83 @@
+<div class="flex w-full h-screen relative">
+
+  <div #sideBar class="w-[14%] h-[100%] shadow-2xl shadow-[#242a30] ring-1 ring-[#242a30] flex flex-col p-1 gap-14">
+
+    <div class="w-full h-[20%] flex items-center justify-between p-2">
+      <div class="w-24 h-20 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden">
+        <img [src]="profileImage" alt="Profil" class="w-full h-full object-cover">
+      </div>
+
+      <div class="flex flex-col gap-1 text-right">
+        <span class="font-semibold text-gray-800">{{nomComplet}}</span>
+        <span class="text-gray-600 text-sm">{{telephone}}</span>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-10 w-full h-[100%] p-2">
+
+      <div class="w-full flex flex-col gap-4">
+        <h1 class="text-[#e1a91c] text-lg font-bold">MENU PRINCIPAL</h1>
+
+        <div class="flex flex-col gap-4">
+          <div [routerLink]="['accueil']" routerLinkActive="active-link" class=" cursor-pointer  flex gap-2">
+            <i class="material-icons text-[#e1a91c]">home</i>
+            <span class="text-md">Accueil</span>
+          </div>
+          <div [routerLink]="['historique']" routerLinkActive="active-link" class=" cursor-pointer flex gap-2">
+            <i class="material-icons text-[#e1a91c]">history</i>
+            <span class="text-md">Historique</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="w-full flex flex-col gap-4">
+        <h1 class="text-[#e1a91c] text-lg font-bold">Administration</h1>
+
+        <div [routerLink]="['profil']" routerLinkActive="active-link" class=" cursor-pointer flex gap-2">
+          <i class="material-icons" style="color: #e1a91c;">person</i>
+          <span class="text-md">Profil</span>
+        </div>
+        <div [routerLink]="['params']" routerLinkActive="active-link" class=" cursor-pointer flex gap-2">
+          <i class="material-icons" style="color: #e1a91c;">settings</i>
+
+          <span class="text-md">Paramètres</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <button (click)="logout()"
+        class="bg-[#e1a91c] flex gap-2 justify-center items-center text-white font-semibold py-2 px-4 rounded w-full">
+        <i class="material-icons">logout</i>
+        <span class="text-xl">Déconnexion</span>
+      </button>
+    </div>
+
+  </div>
+
+  <div #main class="w-[86%] h-[100%] ring-1 ring-[#242a30] flex flex-col gap-1">
+
+    <div class="relative flex justify-center items-center w-full h-[10%] bg-contain"
+      style="background-image: url('./assets/img/omea2.png'); background-size: 48%;">
+      <div class="w-full flex justify-center items-center h-[100%] relative bg-black">
+        <div class="flex flex-col gap-2">
+          <div class="flex justify-center items-center">
+          <h1 class="text-xl font-semibold text-white">Taf taf</h1>
+          </div>
+          <h1 class="text-lg text-[#e1a91c] ">Le meilleur partenaire pour vos transferts d'argent</h1>
+        </div>
+      </div>
+    </div>
+
+    <div class="w-full h-[90%] overflow-auto">
+
+      <router-outlet></router-outlet>
+
+    </div>
+
+  </div>
+
+
+
+</div>

@@ -1,0 +1,35 @@
+<div class="w-full h-[90%] p-6 flex flex-col gap-8">
+  <div class="flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-gray-800">Paramètres</h1>
+    <span class="text-gray-600 text-sm">Gérez vos préférences et les paramètres de l'application</span>
+  </div>
+
+  <div class="bg-white shadow-md rounded-lg p-6 flex flex-col gap-4">
+    <h2 class="text-lg font-semibold text-gray-800">Compte</h2>
+
+    <!-- Type de compte -->
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm text-gray-600">Type de compte</p>
+        <p class="text-gray-800 font-semibold">
+          {{ accountType === 'premium' ? 'Premium' : 'Free' }}
+        </p>
+      </div>
+
+      <div class="flex gap-3">
+        <!-- Bouton passer à Premium -->
+        <button *ngIf="accountType === 'free'" (click)="upgradeToPremium()"
+          class="bg-[#e1a91c] text-white font-semibold py-2 px-4 rounded">
+          Passer à Premium
+        </button>
+
+        <button *ngIf="accountType === 'premium'" disabled
+          class="bg-gray-400 text-white font-semibold py-2 px-4 rounded cursor-not-allowed">
+          Déjà Premium
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+

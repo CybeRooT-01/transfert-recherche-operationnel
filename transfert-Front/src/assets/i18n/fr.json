@@ -1,0 +1,19 @@
+{
+  "SETTINGS": "Paramètres",
+  "SETTINGS_DESC": "Gérez vos préférences et les paramètres de l'application",
+  "GENERAL_PREF": "Préférences générales",
+  "LANGUAGE": "Langue",
+  "NOTIFICATIONS": "Notifications",
+  "NOTIF_TRANSFERS": "Recevoir des notifications pour les transferts",
+  "NOTIF_PROMOS": "Recevoir des notifications pour les promotions",
+  "ACCOUNT": "Compte",
+  "ACCOUNT_TYPE": "Type de compte",
+  "FREE": "Free",
+  "PREMIUM": "Premium",
+  "UPGRADE": "Passer à Premium",
+  "DOWNGRADE": "Revenir à Free",
+  "ARCHIVE": "Archiver mon compte",
+  "ARCHIVE_INFO": "L'archivage désactive votre compte de façon réversible.",
+  "CONFIRM": "Confirmer",
+  "CANCEL": "Annuler"
+}

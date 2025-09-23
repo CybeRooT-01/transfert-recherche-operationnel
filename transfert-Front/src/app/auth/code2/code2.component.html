@@ -1,0 +1,52 @@
+<div class="flex w-full h-screen justify-center items-center p-2 relative">
+
+  <div class="w-[30%] h-[80%] justify-center items-center flex flex-col gap-8">
+
+    <div class="flex flex-col gap-10">
+
+      <div class="flex flex-col gap-4">
+
+        <h3 class="text-gray-700 font-semibold flex items-center">
+          <div class="border-b border-gray-300 flex-grow"></div>
+          <div class="mx-2 text-xl text-[#e1a91c]">AUTHENTIFICATION</div>
+          <div class="border-b border-gray-300 flex-grow"></div>
+        </h3>
+
+        <p class="text-gray-700 text-base">
+          Saisissez votre code pour accéder à l'application.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-6">
+
+        <form [formGroup]="codeForm" class="flex flex-col gap-4">
+          <div class="mb-4 flex flex-col gap-2">
+            <label class="text-gray-800">Code : <span class="text-red-500">*</span></label>
+            <input type="email" formControlName="code"
+              class="form-input rounded-lg w-full h-10 p-1 pl-2 ring-1 ring-gray-200 outline-none" placeholder="code">
+          </div>
+
+          <button (click)="valider()"
+            class="bg-[#e1a91c] flex gap-2 justify-center items-center text-white font-semibold py-2 px-4 rounded w-full"
+            type="submit">
+            <span class="text-xl">Valider</span>
+          </button>
+        </form>
+
+        <div class="font-semibold flex justify-center items-center">
+          <div class="">Vous n'avez pas de compte ?</div>
+          <div (click)="register()" class="register-link mx-2 text-[#e1a91c] text-lg underline cursor-pointer">Créer
+            un compte</div>
+
+        </div>
+
+
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+</div>
