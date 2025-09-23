@@ -17,7 +17,7 @@ export class AccountService {
     });
   }
 
-  upgradeToPremium(userId: number): Observable<any> {
+  upgradeToPremium(userId: number | null): Observable<any> {
     return this.http.put(
       `${this.baseURL}/account/update-subscription/${userId}`,
       {},
@@ -25,7 +25,7 @@ export class AccountService {
     );
   }
 
-  deposit(amount: number, userId: number): Observable<any> {
+  deposit(amount: number, userId: number|null): Observable<any> {
     const body = { amount, userId };
     return this.http.post(
       `${this.baseURL}/transaction/deposit`,
@@ -34,7 +34,7 @@ export class AccountService {
     );
   }
 
-  withdraw(amount: number, userId: number): Observable<any> {
+  withdraw(amount: number, userId: number|null): Observable<any> {
     const body = { amount, userId };
     return this.http.post(
       `${this.baseURL}/transaction/withdraw`,
@@ -43,11 +43,20 @@ export class AccountService {
     );
   }
 
-  transfer(amount: number, userId: number, recipientNumber: string): Observable<any> {
+  transfer(amount: number, userId: number|null, recipientNumber: string): Observable<any> {
     return this.http.post(
       `${this.baseURL}/transaction/transfer`,
       { amount, userId, recipientNumber },
       { headers: this.getAuthHeaders() }
     );
   }
+
+  getTransactions(userId: number | null): Observable<any> {
+    return this.http.get(
+      `${this.baseURL}/users/${userId}`,
+      { headers: this.getAuthHeaders() }
+    );
+  }
+
+
 }

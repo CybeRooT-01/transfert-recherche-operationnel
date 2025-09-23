@@ -1,13 +1,13 @@
 <div class="w-full h-full p-6 flex flex-col gap-8">
 
   <div class="flex justify-between items-center">
-    <h1 class="text-2xl font-bold text-gray-800">Historique des Transactions</h1>
+    <h1 class="text-2xl font-bold text-gray-800">Historique des Transactions ( {{data?.length}} )</h1>
     <span class="text-gray-600 text-sm">Consultez les détails de vos dernières opérations</span>
   </div>
 
-  <div class="bg-white shadow-md rounded-lg overflow-hidden">
+  <div class="bg-white shadow-md rounded-lg overflow-hidden max-h-[470px] overflow-y-auto">
     <table class="w-full text-left border-collapse">
-      <thead class="bg-[#e1a91c] text-white">
+      <thead class="bg-[#e1a91c] text-white sticky top-0">
         <tr>
           <th class="py-3 px-4">Type</th>
           <th class="py-3 px-4">Montant</th>
@@ -17,44 +17,37 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="hover:bg-gray-100 transition">
-          <td class="py-3 px-4">Dépôt</td>
-          <td class="py-3 px-4 text-green-600 font-semibold">+10,000 F CFA</td>
-          <td class="py-3 px-4">06/09/2025</td>
-          <td class="py-3 px-4">
-            <span class="bg-green-100 text-green-600 py-1 px-3 rounded-full text-sm">Réussi</span>
+        <tr *ngFor="let tx of data" class="hover:bg-gray-100 transition">
+          <td class="py-3 px-4 capitalize">
+            {{ tx.type }}
           </td>
-          <td class="py-3 px-4">-</td>
-        </tr>
 
-        <tr class="hover:bg-gray-100 transition">
-          <td class="py-3 px-4">Retrait</td>
-          <td class="py-3 px-4 text-red-600 font-semibold">-5,000 F CFA</td>
-          <td class="py-3 px-4">05/09/2025</td>
-          <td class="py-3 px-4">
-            <span class="bg-green-100 text-red-600 py-1 px-3 rounded-full text-sm">Echoué</span>
+          <td class="py-3 px-4 font-semibold" [ngClass]="{
+              'text-green-600': tx.type === 'depot' || (tx.type === 'transfert' && tx.amount > 0),
+              'text-red-600': tx.type === 'retrait' || tx.amount < 0
+            }">
+            {{ tx.type === 'depot' ? '+' : '-' }}{{ tx.amount | number:'1.0-0' }} F CFA
           </td>
-          <td class="py-3 px-4">-</td>
-        </tr>
 
-        <tr class="hover:bg-gray-100 transition">
-          <td class="py-3 px-4">Réception</td>
-          <td class="py-3 px-4 text-green-600 font-semibold">+2,000 F CFA</td>
-          <td class="py-3 px-4">04/09/2025</td>
           <td class="py-3 px-4">
-            <span class="bg-green-100 text-green-600 py-1 px-3 rounded-full text-sm">Réussi</span>
+            {{ tx.date | date:'dd/MM/yyyy HH:mm' }}
           </td>
-          <td class="py-3 px-4">-</td>
-        </tr>
 
-        <tr class="hover:bg-gray-100 transition">
-          <td class="py-3 px-4">Transfert</td>
-          <td class="py-3 px-4 text-red-600 font-semibold">-3,000 F CFA</td>
-          <td class="py-3 px-4">03/09/2025</td>
           <td class="py-3 px-4">
-            <span class="bg-green-100 text-yellow-600 py-1 px-3 rounded-full text-sm">En attente</span>
+            <span class="py-1 px-3 rounded-full text-sm" [ngClass]="{
+                'bg-green-100 text-green-600': tx.status === 'completed',
+                'bg-yellow-100 text-yellow-600': tx.status === 'pending',
+                'bg-red-100 text-red-600': tx.status === 'failed'
+              }">
+              {{ tx.status === 'completed' ? 'Réussi' :
+              tx.status === 'pending' ? 'En attente' :
+              'Échoué' }}
+            </span>
           </td>
-          <td class="py-3 px-4">778765432</td>
+
+          <td class="py-3 px-4">
+            {{ tx.number || '-' }}
+          </td>
         </tr>
       </tbody>
     </table>

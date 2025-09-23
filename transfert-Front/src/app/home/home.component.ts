@@ -23,15 +23,28 @@ export class HomeComponent implements OnInit {
   constructor(){
   }
 
-  ngOnInit() {
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    console.log("👤 Utilisateur:", user);
-    
-    this.nomComplet = user.username
-    this.telephone = user.phoneNumber;
+  ngOnInit(): void {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const userData = localStorage.getItem('user');
+      if (userData) {
+        try {
+          const user = JSON.parse(userData);
+          console.log("👤 Utilisateur:", user);
 
-    const token = localStorage.getItem('token');
-    console.log('Token:', token);
+          this.nomComplet = user.username ?? '';
+          this.telephone = user.phoneNumber ?? '';
+        } catch (e) {
+          console.error("❌ Erreur parsing userData:", e);
+        }
+      } else {
+        console.warn("⚠️ Aucun utilisateur trouvé dans localStorage");
+      }
+
+      const token = localStorage.getItem('token');
+      console.log('Token:', token);
+    } else {
+      console.warn("⚠️ localStorage non disponible (SSR ou hors navigateur)");
+    }
   }
 
   logout()

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
@@ -9,14 +9,25 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
   templateUrl: './profil.component.html',
   styleUrls: ['./profil.component.css'],
 })
-export class ProfilComponent implements OnInit {
+export class ProfilComponent {
   profileForm!: FormGroup;
   isEditModalOpen = false; // état du modal
 
-  constructor(private fb: FormBuilder) {}
+  private fb = inject(FormBuilder)
 
-  ngOnInit(): void {
-    const userData = JSON.parse(localStorage.getItem('user') || '{}');
+  constructor() {
+    let userData: any = {};
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        try {
+          userData = JSON.parse(storedUser);
+        } catch (e) {
+          console.error('❌ Erreur parsing user:', e);
+          userData = {};
+        }
+      }
+    }
 
     this.profileForm = this.fb.group({
       prenom: [userData.firstName || '', [Validators.required, Validators.minLength(2)]],
@@ -43,10 +54,7 @@ export class ProfilComponent implements OnInit {
       const formData = this.profileForm.value;
       console.log('Mise à jour du profil réussie :', formData);
 
-      // ⚡ Appel API backend (AWS / Laravel)
-      // this.userService.updateProfile(formData).subscribe(...);
-
-      this.closeModal(); // fermer le modal après sauvegarde
+      this.closeModal();
     } else {
       console.log('Formulaire invalide');
     }

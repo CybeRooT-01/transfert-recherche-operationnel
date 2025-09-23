@@ -17,6 +17,14 @@ export class AccueilComponent {
   private router = inject(Router);
   private accountService = inject(AccountService);
 
+  userId: number | null = null;
+  data: any = {
+    balance: 0,
+    depot: [],
+    transfer: [],
+    retrait: []
+  };
+
   currentModal: 'depot' | 'retrait' | 'transfert' | null = null;
 
   amount: number | null = null;
@@ -33,6 +41,31 @@ export class AccueilComponent {
 
   constructor() {}
 
+  ngOnInit(): void {
+    let userData: any = {};
+    if (typeof window !== 'undefined' && localStorage.getItem('user')) {
+      userData = JSON.parse(localStorage.getItem('user') || '{}');
+    }
+
+    console.log('userData', userData.id);
+    this.userId = userData.id || null;
+
+    if (this.userId) {
+      this.fetchTransactions();
+    }
+  }
+
+  fetchTransactions(): void {
+    this.accountService.getTransactions(this.userId).subscribe({
+      next: (res) => {
+        console.log('Transactions:', res);
+        this.data = res;
+      },
+      error: (err) => {
+        console.error('Erreur de récupération des transactions', err);
+      }
+    });
+  }
 
   openModal(modal: 'depot' | 'retrait' | 'transfert'): void {
     this.currentModal = modal;
@@ -53,11 +86,12 @@ export class AccueilComponent {
       return;
     }
 
-    console.log('💰 Dépôt demandé', { montant: this.amount, userId: 9 });
+    console.log('💰 Dépôt demandé', { montant: this.amount, userId: this.userId });
 
-    this.accountService.deposit(this.amount, 9).subscribe({
+    this.accountService.deposit(this.amount, this.userId).subscribe({
       next: (res) => {
         console.log('✅ Dépôt réussi', res);
+        this.fetchTransactions();
         this.closeModal();
       },
       error: (err) => {
@@ -72,11 +106,12 @@ export class AccueilComponent {
       return;
     }
 
-    console.log('💰 Retrait demandé', { montant: this.retraitMontant, userId: 9 });
+    console.log('💰 Retrait demandé', { montant: this.retraitMontant, userId: this.userId });
 
-    this.accountService.withdraw(this.retraitMontant, 9).subscribe({
+    this.accountService.withdraw(this.retraitMontant, this.userId).subscribe({
       next: (res) => {
         console.log('✅ Retrait réussi', res);
+        this.fetchTransactions();
         this.closeModal();
       },
       error: (err) => {
@@ -119,13 +154,14 @@ export class AccueilComponent {
 
     console.log('📤 Transfert demandé', {
       montant: this.transMontantSend,
-      userId: 9,
+      userId: this.userId,
       destinataire: this.transNumero
     });
 
-    this.accountService.transfer(this.transMontantSend, 9, this.transNumero).subscribe({
+    this.accountService.transfer(this.transMontantSend, this.userId, this.transNumero).subscribe({
       next: (res) => {
         console.log('✅ Transfert réussi', res);
+        this.fetchTransactions();
         this.closeModal();
       },
       error: (err) => {
@@ -133,5 +169,6 @@ export class AccueilComponent {
       }
     });
   }
+
 
 }
