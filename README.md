@@ -123,7 +123,7 @@ Projet réalisé dans le cadre de l'UE **Recherche Opérationnelle**.
 
 * 👤 Participants
  - Thierno Birahim Gueye (Developpeur backend / devops)
- - El Hadj Malick Ndao (Developpeur frontend)
+ - Elhadji Malick Ndao | N06603120201 (Developpeur frontend)
  - Siabatou sane (Developpeur frontend, designer)
 * 🎓 Master Ingenieurie logiciel P8 — 2025
 
