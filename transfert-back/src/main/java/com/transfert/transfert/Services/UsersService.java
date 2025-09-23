@@ -118,12 +118,20 @@ public class UsersService {
                 }
                 default -> typeLabel = t.getType() != null ? t.getType().name().toLowerCase() : "inconnu";
             }
+            String recipientPhone = null;
+            try {
+                if (t.getReceiverAccount() != null && t.getReceiverAccount().getUser() != null) {
+                    recipientPhone = t.getReceiverAccount().getUser().getPhoneNumber();
+                }
+            } catch (Exception ignored) {
+                // fallback remains null
+            }
             history.add(new com.transfert.transfert.Dto.Response.TransactionHistoryItem(
                     typeLabel,
                     t.getAmount(),
                     t.getCreatedAt(),
                     t.getStatus() != null ? t.getStatus().name().toLowerCase() : null,
-                    t.getTransactionNumber()
+                    recipientPhone
             ));
         }
         // Optionally sort by date desc
