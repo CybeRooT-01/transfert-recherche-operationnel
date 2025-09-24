@@ -8,6 +8,7 @@ import com.transfert.transfert.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +20,7 @@ import java.util.Optional;
 public class PasswordService {
     private final UserRepository userRepository;
     private final EmailService emailService;
+    private final PasswordEncoder passwordEncoder;
     private final Map<String, String> codeStore = new HashMap<>(); // phone/email -> code
 
     public ResponseEntity<?> sendResetCode(ForgotPasswordRequest request) {
@@ -62,7 +64,8 @@ public class PasswordService {
             return ResponseEntity.badRequest().body(Map.of("error", "Code non envoyé ou expiré"));
         }
         Users user = userOpt.get();
-        user.setPassword(request.getNewPassword());
+        String encodedPassword = passwordEncoder.encode(request.getNewPassword());
+        user.setPassword(encodedPassword);
         userRepository.save(user);
         codeStore.remove(phoneOrEmail);
         return ResponseEntity.ok(Map.of("message", "Mot de passe réinitialisé"));

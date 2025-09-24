@@ -80,7 +80,8 @@ public class UsersService {
             if (user.getEmail() != null) u.setEmail(user.getEmail());
             //if (user.getPhotoUrl() != null) u.setPhotoUrl(user.getPhotoUrl());
             Users savedUser = userRepository.save(u);
-            return ResponseEntity.ok(savedUser);
+            UsersResponse dto = UsersMapper.toDto(savedUser);
+            return ResponseEntity.ok(dto);
         }).orElse(ResponseEntity.notFound().build());
     }
 
