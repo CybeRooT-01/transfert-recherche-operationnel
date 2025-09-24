@@ -22,6 +22,22 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class UsersService {
+    // Utilitaire pour convertir Users en UsersResponse (sans le champ account)
+    private UsersResponse toUsersResponse(Users user) {
+        return new UsersResponse(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getPhoneNumber(),
+                user.getCountry(),
+                user.getIdNumber(),
+                user.getRole() != null ? user.getRole().name() : null,
+                user.getStatus(),
+                user.getSubscriptionType()
+        );
+    }
 
     private final AuthService authService;
     private final UserRepository userRepository;
@@ -69,7 +85,7 @@ public class UsersService {
         return ResponseEntity.ok(users);
     }
 
-    public ResponseEntity<Users> updateUser(String id, Users user) {
+    public ResponseEntity<UsersResponse> updateUser(String id, Users user) {
         Long castedId = Long.parseLong(id);
         return userRepository.findById(castedId).map(u -> {
             if (user.getUsername() != null) u.setUsername(user.getUsername());
@@ -80,7 +96,7 @@ public class UsersService {
             if (user.getEmail() != null) u.setEmail(user.getEmail());
             //if (user.getPhotoUrl() != null) u.setPhotoUrl(user.getPhotoUrl());
             Users savedUser = userRepository.save(u);
-            UsersResponse dto = UsersMapper.toDto(savedUser);
+            UsersResponse dto = toUsersResponse(savedUser);
             return ResponseEntity.ok(dto);
         }).orElse(ResponseEntity.notFound().build());
     }
