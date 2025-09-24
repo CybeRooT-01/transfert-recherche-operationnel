@@ -71,6 +71,11 @@ public class TransactionService {
         var companyAccount = accountRepository.findFirstByIsCompanyAccountTrue();
         if(companyAccount == null) throw new RuntimeException("Compte company introuvable");
 
+        if (total.compareTo(BigDecimal.ZERO) <= 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", "Le montant du dépôt après frais doit être positif."));
+        }
+
         account.setBalance(account.getBalance().add(total));
         companyAccount.setBalance(companyAccount.getBalance().add(fees));
         accountRepository.save(account);
@@ -176,7 +181,9 @@ public class TransactionService {
 
         BigDecimal fees = amount.multiply(rate);
         BigDecimal total = amount.add(fees);
-        checkFonds(account, total);
+        // Vérification stricte du solde
+        if (checkFonds(account, total).isPresent()) return checkFonds(account, total).get();
+
         checkLimits(account, total);
         account.setBalance(account.getBalance().subtract(total));
         var companyAccount = accountRepository.findFirstByIsCompanyAccountTrue();
@@ -232,10 +239,9 @@ public class TransactionService {
         BigDecimal fees = amount.multiply(rate);
         BigDecimal total = amount.add(fees);
 
-        if(senderAccount.getBalance().compareTo(total) < 0){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("error", "Solde insuffisant"));
-        }
+        // Vérification stricte du solde
+        if (checkFonds(senderAccount, total).isPresent()) return checkFonds(senderAccount, total).get();
+
         senderAccount.setBalance(senderAccount.getBalance().subtract(total));
         receiverAccount.setBalance(receiverAccount.getBalance().add(amount));
         companyAccount.setBalance(companyAccount.getBalance().add(fees));

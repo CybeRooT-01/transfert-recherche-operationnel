@@ -112,9 +112,7 @@ La structure des fichiers Kubernetes dans le projet est la suivante :
 ```
 
 Backend : exposé via un Service et déployé sur le cluster
-
 Frontend : non déployé sur Kubernetes
-
 MySQL & smtp4dev : déployés comme pods stateful/services
 
 ## 👨‍💻 Auteurs
@@ -122,8 +120,9 @@ MySQL & smtp4dev : déployés comme pods stateful/services
 Projet réalisé dans le cadre de l'UE **Recherche Opérationnelle**.
 
 * 👤 Participants
- - Thierno Birahim Gueye (Developpeur backend / devops)
- - Elhadji Malick Ndao | N06603120201 (Developpeur frontend)
- - Siabatou sane (Developpeur frontend, designer)
+
+ - Thierno Birahim Gueye (Developpeur backend / devops) N00686020201
+ - Elhadji Malick Ndao (Developpeur frontend) N06603120201
+ - Siabatou sane (Developpeuse frontend, designer) N04163320202
 * 🎓 Master Ingenieurie logiciel P8 — 2025
 
