@@ -71,6 +71,8 @@ public class TransactionService {
         var companyAccount = accountRepository.findFirstByIsCompanyAccountTrue();
         if(companyAccount == null) throw new RuntimeException("Compte company introuvable");
 
+        if(checkFonds(account, total).isPresent()) return checkFonds(account, total).get();
+
         account.setBalance(account.getBalance().add(total));
         companyAccount.setBalance(companyAccount.getBalance().add(fees));
         accountRepository.save(account);
@@ -173,6 +175,11 @@ public class TransactionService {
         BigDecimal rate = account.getSubscriptionType() == SubscriptionType.FREE
                 ? new BigDecimal("0.02")
                 : new BigDecimal("0.01");
+
+        if(account.getBalance().compareTo(amount) < 0){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", "Solde insuffisant"));
+        }
 
         BigDecimal fees = amount.multiply(rate);
         BigDecimal total = amount.add(fees);
