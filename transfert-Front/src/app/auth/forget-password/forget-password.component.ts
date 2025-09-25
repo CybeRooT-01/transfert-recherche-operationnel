@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, Signal, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../_helpers/services/auth.service';
+import { NotificationService } from '../../_helpers/services/notification.service';
 
 
 @Component({
@@ -19,18 +21,34 @@ export class ForgetPasswordComponent {
   private router = inject(Router);
   private fb = inject(FormBuilder);
 
+  private authService = inject(AuthService);
+  private notifService = inject(NotificationService);
+
+
   constructor()
   {
     this.passwordForm = this.fb.group({
-      telephone: ['783845870'],
-      password: ['elzondao']
+      phoneOrEmail: ['99999']
     })
 
   }
 
-  login()
-  {
-    this.router.navigateByUrl("/code2")
+  send() {
+    const data = this.passwordForm.value;
+    console.log('📩 Données envoyées:', data);
+
+    this.authService.forgotPswd(data).subscribe({
+      next: (res) => {
+        console.log('✅ Réponse forgot password:', res);
+        // tu peux rediriger vers la page de code
+        this.router.navigateByUrl('/code2');
+        this.notifService.success('Code envoyé avec succès ! Vérifiez votre email.');
+        localStorage.setItem('phoneOrEmail', data.phoneOrEmail);
+      },
+      error: (err) => {
+        console.error('❌ Erreur API forgot password:', err);
+      },
+    });
   }
 
   register()
@@ -38,9 +56,5 @@ export class ForgetPasswordComponent {
     this.router.navigateByUrl("/sign-up")
   }
 
-  onForgotPassword()
-  {
-    this.router.navigateByUrl("/forget-password")
-  }
 
 }

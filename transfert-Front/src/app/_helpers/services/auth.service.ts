@@ -80,4 +80,25 @@ export class AuthService {
     return this.http.put(`${this.apiUrl2}/users/${userId}`, data, { headers });
   }
 
+  forgotPswd(data: any): Observable<any> {
+    return this.http.post<any>(
+      `${this.apiUrl2}/password/forgot`,
+      data
+    );
+  }
+
+  validateCode(data: any): Observable<any> {
+    return this.http.post<any>(
+      `${this.apiUrl2}/password/validate-code`,
+      data
+    );
+  }
+
+  resetPswd(data: any): Observable<any> {
+    return this.http.post<any>(
+      `${this.apiUrl2}/password/reset`,
+      data
+    );
+  }
+
 }
