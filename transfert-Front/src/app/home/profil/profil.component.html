@@ -1,4 +1,4 @@
-<div class="w-full h-[90%] p-6 flex flex-col gap-1">
+<div class="w-full h-[90%] p-6 flex flex-col gap-4">
 
   <!-- Header -->
   <div class="flex justify-between items-center">
@@ -8,63 +8,50 @@
     </div>
 
     <!-- Icône d’édition -->
-    <button (click)="openEditModal()" class="p-2 rounded-full hover:bg-gray-200">
-      ✏️
-    </button>
+    <button (click)="openEditModal()" class="p-2 rounded-full hover:bg-gray-200">✏️</button>
   </div>
 
-  <!-- Photo -->
-  <div class="flex justify-center">
-    <div class="w-32 h-32 border border-gray-300 rounded-full overflow-hidden">
-      <img src="/assets/images/raffa.jpg" alt="Photo de profil" class="w-full h-full object-cover" />
-    </div>
-  </div>
-
-  <!-- Infos perso -->
-  <div class="bg-white shadow-md rounded-lg p-6 flex flex-col gap-6">
+  <!-- Infos personnelles -->
+  <div class="bg-white shadow-md rounded-lg p-6 flex flex-col gap-4">
     <h2 class="text-lg font-semibold text-gray-800">Informations personnelles</h2>
     <div class="grid grid-cols-2 gap-4">
-      <div>
-        <label class="block text-sm font-medium text-gray-600">Nom complet</label>
-        <p class="text-gray-800 font-semibold">
-          {{ profileForm.value.prenom }} {{ profileForm.value.nom }}
-        </p>
+      <div><label class="block text-sm font-medium text-gray-600">Nom complet</label>
+        <p class="text-gray-800 font-semibold">{{ profileForm.value.firstName }} {{ profileForm.value.lastName }}</p>
       </div>
-      <div>
-        <label class="block text-sm font-medium text-gray-600">Numéro de téléphone</label>
-        <p class="text-gray-800 font-semibold">
-          {{ profileForm.value.telephone }}
-        </p>
+      <div><label class="block text-sm font-medium text-gray-600">Username</label>
+        <p class="text-gray-800 font-semibold">{{ profileForm.value.username }}</p>
       </div>
-      <div>
-        <label class="block text-sm font-medium text-gray-600">Adresse e-mail</label>
-        <p class="text-gray-800 font-semibold">
-          {{ profileForm.value.email }}
-        </p>
+      <div><label class="block text-sm font-medium text-gray-600">Téléphone</label>
+        <p class="text-gray-800 font-semibold">{{ profileForm.value.phoneNumber }}</p>
       </div>
-      <div>
-        <label class="block text-sm font-medium text-gray-600">Pays</label>
-        <p class="text-gray-800 font-semibold">
-          {{ profileForm.value.pays }}
-        </p>
+      <div><label class="block text-sm font-medium text-gray-600">Email</label>
+        <p class="text-gray-800 font-semibold">{{ profileForm.value.email }}</p>
+      </div>
+      <div><label class="block text-sm font-medium text-gray-600">Pays</label>
+        <p class="text-gray-800 font-semibold">{{ profileForm.value.country }}</p>
       </div>
     </div>
   </div>
 
-  <!-- Infos identité -->
-  <div class="bg-white shadow-md rounded-lg p-6 flex flex-col gap-6">
+  <!-- Informations identité -->
+  <div class="bg-white shadow-md rounded-lg p-6 flex flex-col gap-4">
     <h2 class="text-lg font-semibold text-gray-800">Informations d'identité</h2>
     <div class="grid grid-cols-2 gap-4">
       <div>
         <label class="block text-sm font-medium text-gray-600">Numéro de pièce</label>
-        <p class="text-gray-800 font-semibold">
-          {{ profileForm.value.numero_piece }}
-        </p>
+        <p class="text-gray-800 font-semibold">{{ profileForm.value.idNumber }}</p>
       </div>
       <div>
-        <label class="block text-sm font-medium text-gray-600">Photo de la pièce</label>
+        <label class="block text-sm font-medium text-gray-600">Photo pièce (recto)</label>
         <div class="w-32 h-32 border border-gray-300 rounded-lg overflow-hidden">
-          <img [src]="profileForm.value.photo_piece || '/assets/images/photo_piece.jpg'" alt="Photo de la pièce"
+          <img [src]="profileForm.value.rectoCni || '/assets/images/photo_piece.jpg'" alt="Recto CNI"
+            class="w-full h-full object-cover" />
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-600">Photo pièce (verso)</label>
+        <div class="w-32 h-32 border border-gray-300 rounded-lg overflow-hidden">
+          <img [src]="profileForm.value.versoCni || '/assets/images/photo_piece.jpg'" alt="Verso CNI"
             class="w-full h-full object-cover" />
         </div>
       </div>
@@ -75,95 +62,59 @@
 
 <!-- Modal édition -->
 <div *ngIf="isEditModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+  <div class="bg-white rounded-xl shadow-lg w-[50%] h-[85%] p-6 flex flex-col gap-6 overflow-y-auto relative">
 
-  <!-- Modal -->
-  <div class="bg-white rounded-xl shadow-lg w-[45%] h-[90%] p-6 flex flex-col gap-8 relative">
+    <button (click)="closeModal()" class="absolute top-3 right-3 text-xl text-[#e1a91c]">X</button>
 
-    <!-- Bouton fermeture -->
-    <button (click)="closeModal()" class="absolute top-3 right-3 text-xl text-[#e1a91c]">
-      X
-    </button>
+    <h3 class="text-gray-700 font-semibold text-center text-xl mb-4">Modification Profil</h3>
 
-    <!-- Header -->
-    <div class="flex flex-col gap-4">
-      <h3 class="text-gray-700 font-semibold flex items-center">
-        <div class="border-b border-gray-300 flex-grow"></div>
-        <div class="mx-2 text-xl text-[#e1a91c]">MODIFICATION</div>
-        <div class="border-b border-gray-300 flex-grow"></div>
-      </h3>
-    </div>
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
 
-    <!-- Formulaire -->
-    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-6 overflow-y-auto pr-2">
-
-      <!-- Nom & Prénom -->
-      <div class="flex gap-x-4">
-        <div class="flex flex-col gap-2 w-[48%]">
-          <label class="text-gray-800">Prénom : <span class="text-red-500">*</span></label>
-          <input type="text" formControlName="prenom"
-            class="rounded-lg w-full h-10 p-2 ring-1 ring-gray-200 outline-none focus:ring-[#e1a91c]"
-            placeholder="Entrez votre prénom">
+      <div class="flex gap-4">
+        <div class="flex flex-col w-1/2">
+          <label class="text-gray-800">Prénom</label>
+          <input type="text" formControlName="firstName"
+            class="rounded-lg w-full h-10 p-2 ring-1 ring-gray-200 outline-none" />
         </div>
-        <div class="flex flex-col gap-2 w-[48%]">
-          <label class="text-gray-800">Nom : <span class="text-red-500">*</span></label>
-          <input type="text" formControlName="nom"
-            class="rounded-lg w-full h-10 p-2 ring-1 ring-gray-200 outline-none focus:ring-[#e1a91c]"
-            placeholder="Entrez votre nom">
+        <div class="flex flex-col w-1/2">
+          <label class="text-gray-800">Nom</label>
+          <input type="text" formControlName="lastName"
+            class="rounded-lg w-full h-10 p-2 ring-1 ring-gray-200 outline-none" />
         </div>
       </div>
 
-      <!-- Téléphone & Email -->
-      <div class="flex gap-x-4">
-        <div class="flex flex-col gap-2 w-[48%]">
-          <label class="text-gray-800">Téléphone : <span class="text-red-500">*</span></label>
-          <input type="tel" formControlName="telephone"
-            class="rounded-lg w-full h-10 p-2 ring-1 ring-gray-200 outline-none focus:ring-[#e1a91c]"
-            placeholder="Entrez votre téléphone">
+      <div class="flex gap-4">
+        <div class="flex flex-col w-1/2">
+          <label class="text-gray-800">Username</label>
+          <input type="text" formControlName="username"
+            class="rounded-lg w-full h-10 p-2 ring-1 ring-gray-200 outline-none" />
         </div>
-        <div class="flex flex-col gap-2 w-[48%]">
-          <label class="text-gray-800">Email :</label>
+        <div class="flex flex-col w-1/2">
+          <label class="text-gray-800">Téléphone</label>
+          <input type="tel" formControlName="phoneNumber"
+            class="rounded-lg w-full h-10 p-2 ring-1 ring-gray-200 outline-none" />
+        </div>
+      </div>
+
+      <div class="flex gap-4">
+        <div class="flex flex-col w-1/2">
+          <label class="text-gray-800">Email</label>
           <input type="email" formControlName="email"
-            class="rounded-lg w-full h-10 p-2 ring-1 ring-gray-200 outline-none focus:ring-[#e1a91c]"
-            placeholder="Entrez votre email">
+            class="rounded-lg w-full h-10 p-2 ring-1 ring-gray-200 outline-none" />
+        </div>
+        <div class="flex flex-col w-1/2">
+          <label class="text-gray-800">Pays</label>
+          <input type="text" formControlName="country"
+            class="rounded-lg w-full h-10 p-2 ring-1 ring-gray-200 outline-none" />
         </div>
       </div>
 
-      <!-- Pays & Photo -->
-      <div class="flex gap-x-4">
-        <div class="flex flex-col gap-2 w-[48%]">
-          <label class="text-gray-800">Pays : <span class="text-red-500">*</span></label>
-          <input type="text" formControlName="pays"
-            class="rounded-lg w-full h-10 p-2 ring-1 ring-gray-200 outline-none focus:ring-[#e1a91c]"
-            placeholder="Entrez votre pays">
-        </div>
-        <div class="flex flex-col gap-2 w-[48%]">
-          <label class="text-gray-800">Photo : <span class="text-red-500">*</span></label>
-          <input type="file" formControlName="photo"
-            class="rounded-lg w-full h-10 p-2 ring-1 ring-gray-200 outline-none">
-        </div>
-      </div>
-
-      <!-- Numéro & Photo pièce -->
-      <div class="flex gap-x-4">
-        <div class="flex flex-col gap-2 w-[48%]">
-          <label class="text-gray-800">Numéro pièce : <span class="text-red-500">*</span></label>
-          <input type="text" formControlName="numero_piece"
-            class="rounded-lg w-full h-10 p-2 ring-1 ring-gray-200 outline-none focus:ring-[#e1a91c]"
-            placeholder="Numéro de la pièce d'identité">
-        </div>
-        <div class="flex flex-col gap-2 w-[48%]">
-          <label class="text-gray-800">Photo pièce : <span class="text-red-500">*</span></label>
-          <input type="file" formControlName="photo_piece"
-            class="rounded-lg w-full h-10 p-2 ring-1 ring-gray-200 outline-none">
-        </div>
-      </div>
-
-      <!-- Bouton -->
       <button type="submit"
-        class="bg-[#e1a91c] flex gap-2 justify-center items-center text-white font-semibold py-2 px-4 rounded-lg mt-12 w-full hover:bg-[#c08b15] transition">
-        <span class="text-xl">Modifier</span>
+        class="bg-[#e1a91c] text-white font-semibold py-2 px-4 rounded-lg mt-16 w-full hover:bg-[#c08b15] transition">
+        Modifier
       </button>
-    </form>
 
+    </form>
   </div>
 </div>
+

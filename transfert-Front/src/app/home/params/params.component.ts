@@ -1,6 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AccountService } from '../../_helpers/services/account.service';
+import { NotificationService } from '../../_helpers/services/notification.service';
+
 
 @Component({
   selector: 'app-params',
@@ -15,6 +17,7 @@ export class ParamsComponent implements OnInit {
   userId: number | null = null;
 
   private accountService = inject(AccountService);
+  private notifService = inject(NotificationService);
 
   constructor() {}
 
@@ -54,7 +57,7 @@ export class ParamsComponent implements OnInit {
       next: (res: any) => {
         console.log('✅ Compte passé à Premium', res);
         this.accountType = 'premium';
-
+        this.notifService.success("Votre compte est maintenant Premium. Profitez-en !");
         const userDataStr = localStorage.getItem('user');
         if (userDataStr) {
           const userData = JSON.parse(userDataStr);
@@ -64,6 +67,7 @@ export class ParamsComponent implements OnInit {
       },
       error: (err: any) => {
         console.error('❌ Erreur upgrade:', err);
+        this.notifService.error("Échec de la mise à niveau. Veuillez réessayer.");
       }
     });
   }

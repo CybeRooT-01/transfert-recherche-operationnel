@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { AuthService } from '../_helpers/services/auth.service';
+import { NotificationService } from '../_helpers/services/notification.service';
 
 
 @Component({
@@ -19,6 +21,8 @@ export class HomeComponent implements OnInit {
 
   private router = inject(Router);
   private fb = inject(FormBuilder);
+  private authService = inject(AuthService);
+  private notifService = inject(NotificationService);
 
   constructor(){
   }
@@ -47,9 +51,10 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  logout()
-  {
-    this.router.navigateByUrl('')
+  logout() {
+    localStorage.clear();
+    this.notifService.success("Déconnexion réussie. À bientôt !");
+    this.router.navigateByUrl('/');
   }
 
 }

@@ -12,16 +12,20 @@ import { ConfirmPasswordComponent } from './auth/confirm-password/confirm-passwo
 import { Code2Component } from './auth/code2/code2.component';
 import { LandingComponent } from './auth/landing/landing.component';
 
+import { authGuard } from './_helpers/guards/auth.guard';
+import { guestGuard } from './_helpers/guards/guest.guard';
+
 
 export const routes: Routes = [
-  { path: "", component: LandingComponent },
-  { path: "login", component: LoginComponent },
-  { path: "code", component: CodeComponent },
-  { path: "code2", component: Code2Component },
-  { path: "confirm-password", component: ConfirmPasswordComponent },
-  { path: "sign-up", component: SignUpComponent },
-  { path: "forget-password", component: ForgetPasswordComponent },
-  { path: "home", component: HomeComponent,
+  { path: "", component: LandingComponent, canActivate: [guestGuard] },
+  { path: "login", component: LoginComponent, canActivate: [guestGuard] },
+  { path: "code", component: CodeComponent, canActivate: [guestGuard] },
+  { path: "code2", component: Code2Component, canActivate: [guestGuard] },
+  { path: "confirm-password", component: ConfirmPasswordComponent,
+    canActivate: [guestGuard] },
+  { path: "sign-up", component: SignUpComponent, canActivate: [guestGuard] },
+  { path: "forget-password", component: ForgetPasswordComponent, canActivate: [guestGuard] },
+  { path: "home", component: HomeComponent, canActivate: [authGuard],
     children: [
       { path: '', redirectTo: 'accueil', pathMatch: 'full' },
       { path: 'accueil', component: AccueilComponent },
@@ -29,9 +33,6 @@ export const routes: Routes = [
       { path: 'profil', component: ProfilComponent },
       { path: 'params', component: ParamsComponent }
     ]
-
   },
-
-
 
 ];

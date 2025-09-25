@@ -37,6 +37,7 @@ export interface VerifyPinResponse {
 export class AuthService {
   private apiUrl = 'http://localhost:8081/api/v1/auth';
   private apiUrl1 = 'http://localhost:8081/api/v1/account';
+  private apiUrl2 = 'http://localhost:8081/api/v1';
 
   private http = inject(HttpClient);
   private api = inject(ApiService);
@@ -50,6 +51,10 @@ export class AuthService {
 
   login(data: any): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, data);
+  }
+
+  logout(): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.apiUrl}/logout`, {});
   }
 
   verifyPin(pin: string): Observable<any> {
@@ -66,24 +71,34 @@ export class AuthService {
     );
   }
 
-  // verifyPin(pin: string): Observable<any> {
-  //   const token = localStorage.getItem('token');
-  //   const headers = new HttpHeaders({
-  //     'Content-Type': 'application/json',
-  //     'Authorization': `Bearer ${token}`
-  //   });
+  updateUser(userId: number, data: any): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
 
-  //   return this.http.post(`${this.apiUrl1}/verify-pin`, { pin }, { headers, responseType: 'text' })
-  //     .pipe(
-  //       map(res => {
-  //         try {
-  //           return JSON.parse(res);
-  //         } catch (e) {
-  //           console.error("Réponse JSON invalide:", res);
-  //           throw e;
-  //         }
-  //       })
-  //     );
-  // }
+    return this.http.put(`${this.apiUrl2}/users/${userId}`, data, { headers });
+  }
+
+  forgotPswd(data: any): Observable<any> {
+    return this.http.post<any>(
+      `${this.apiUrl2}/password/forgot`,
+      data
+    );
+  }
+
+  validateCode(data: any): Observable<any> {
+    return this.http.post<any>(
+      `${this.apiUrl2}/password/validate-code`,
+      data
+    );
+  }
+
+  resetPswd(data: any): Observable<any> {
+    return this.http.post<any>(
+      `${this.apiUrl2}/password/reset`,
+      data
+    );
+  }
 
 }

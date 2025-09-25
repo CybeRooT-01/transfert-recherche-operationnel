@@ -120,8 +120,9 @@ MySQL & smtp4dev : déployés comme pods stateful/services
 Projet réalisé dans le cadre de l'UE **Recherche Opérationnelle**.
 
 * 👤 Participants
+
  - Thierno Birahim Gueye (Developpeur backend / devops) N00686020201
- - El Hadj Malick Ndao (Developpeur frontend) N06603120201
+ - Elhadji Malick Ndao (Developpeur frontend) N06603120201
  - Siabatou sane (Developpeuse frontend, designer) N04163320202
 * 🎓 Master Ingenieurie logiciel P8 — 2025
 
