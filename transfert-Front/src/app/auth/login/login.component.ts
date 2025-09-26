@@ -36,6 +36,7 @@ export class LoginComponent {
     this.authService.login(this.loginForm.value).subscribe({
       next: (res:any) => {
         console.log('✅ Login réussi', res);
+        localStorage.setItem('loginInProgress', 'true');
         localStorage.setItem('token', res.token);
         localStorage.setItem('user', JSON.stringify(res));
         this.router.navigateByUrl("/code")

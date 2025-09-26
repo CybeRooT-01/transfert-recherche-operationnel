@@ -3,6 +3,9 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../_helpers/services/auth.service';
 import { CommonModule } from '@angular/common';
+import { NotificationService } from '../../_helpers/services/notification.service';
+
+
 
 @Component({
   selector: 'app-sign-up',
@@ -16,6 +19,8 @@ export class SignUpComponent {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private authService = inject(AuthService);
+  private notifService = inject(NotificationService);
+
 
   constructor() {
     this.registerForm = this.fb.group({
@@ -62,9 +67,11 @@ export class SignUpComponent {
         next: (res) => {
           console.log('✅ Utilisateur créé :', res);
           this.router.navigateByUrl('/login');
+          this.notifService.success("Inscription réussie. Vous pouvez maintenant vous connecter.");
         },
         error: (err) => {
           console.error('❌ Erreur lors de l\'inscription :', err);
+          this.notifService.error("Échec de l'inscription. Veuillez réessayer.");
         }
       });
     } else {

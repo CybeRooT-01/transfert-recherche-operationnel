@@ -3,11 +3,12 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AccountService } from '../../_helpers/services/account.service';
-
+import { NotificationService } from '../../_helpers/services/notification.service';
+import { jsPDF } from 'jspdf';
 
 @Component({
   selector: 'app-accueil',
-   standalone: true,
+  standalone: true,
   imports: [ CommonModule, FormsModule ],
   templateUrl: './accueil.component.html',
   styleUrls: ['./accueil.component.css']
@@ -16,6 +17,7 @@ export class AccueilComponent {
 
   private router = inject(Router);
   private accountService = inject(AccountService);
+  private notifService = inject(NotificationService);
 
   userId: number | null = null;
   data: any = {
@@ -36,6 +38,8 @@ export class AccueilComponent {
   transMontantSend: number | null = null;
   transMontantRecept: number | null = null;
   transNumero = '';
+
+  destinataire: any;
 
   private isUpdating = false;
 
@@ -82,27 +86,26 @@ export class AccueilComponent {
 
   submitDepot(): void {
     if (!this.amount || this.amount <= 0) {
-      console.log('Montant ou utilisateur invalide');
+      this.notifService.error('⚠️ Montant invalide');
       return;
     }
 
-    console.log('💰 Dépôt demandé', { montant: this.amount, userId: this.userId });
-
     this.accountService.deposit(this.amount, this.userId).subscribe({
       next: (res) => {
-        console.log('✅ Dépôt réussi', res);
+        this.notifService.success('✅ Dépôt réussi !');
         this.fetchTransactions();
         this.closeModal();
+        this.generateReceipt(res, 'depot');
       },
       error: (err) => {
-        console.error('❌ Erreur dépôt', err);
+        this.notifService.error('❌ Erreur lors du dépôt');
       }
     });
   }
 
   submitRetrait(): void {
     if (!this.retraitMontant || this.retraitMontant <= 0) {
-      console.log('Montant invalide');
+      this.notifService.error('❌ Montant invalide pour le retrait');
       return;
     }
 
@@ -111,11 +114,14 @@ export class AccueilComponent {
     this.accountService.withdraw(this.retraitMontant, this.userId).subscribe({
       next: (res) => {
         console.log('✅ Retrait réussi', res);
+        this.notifService.success('✅ Retrait effectué avec succès');
         this.fetchTransactions();
         this.closeModal();
+        this.generateReceipt(res, 'retrait');
       },
       error: (err) => {
         console.error('❌ Erreur retrait', err);
+        this.notifService.error('❌ Échec du retrait');
       }
     });
   }
@@ -148,7 +154,7 @@ export class AccueilComponent {
 
   submitTransfert(): void {
     if (!this.transMontantSend || this.transMontantSend <= 0 || !this.transNumero) {
-      console.log('❌ Infos invalides pour le transfert');
+      this.notifService.error('❌ Infos invalides pour le transfert');
       return;
     }
 
@@ -157,17 +163,86 @@ export class AccueilComponent {
       userId: this.userId,
       destinataire: this.transNumero
     });
+    this.destinataire = this.transNumero;
 
     this.accountService.transfer(this.transMontantSend, this.userId, this.transNumero).subscribe({
       next: (res) => {
         console.log('✅ Transfert réussi', res);
+        this.notifService.success('✅ Transfert effectué avec succès');
         this.fetchTransactions();
         this.closeModal();
+        this.generateReceipt(res, 'transfert');
       },
       error: (err) => {
         console.error('❌ Erreur transfert', err);
+        this.notifService.error('❌ Échec du transfert');
       }
     });
+  }
+
+  generateReceipt(transaction: any, type: 'depot' | 'retrait' | 'transfert') {
+    const doc = new jsPDF();
+
+    doc.setFontSize(20);
+    doc.setTextColor('#1e3a8a');
+    doc.text('Reçu de transaction', 105, 20, { align: 'center' });
+
+    doc.setDrawColor('#1e3a8a');
+    doc.setLineWidth(0.5);
+    doc.line(20, 25, 190, 25);
+
+    let y = 35;
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+
+    doc.text(`Type :`, 20, y);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`${type}`, 70, y);
+
+    y += 10;
+    doc.setFont('helvetica', 'bold');
+    doc.text(`Montant :`, 20, y);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`${transaction.amountDebited || transaction.amountCredited} F CFA`, 70, y);
+
+    if (type === 'transfert') {
+      y += 10;
+      doc.setFont('helvetica', 'bold');
+      doc.text(`Numéro destinataire :`, 20, y);
+      doc.setFont('helvetica', 'normal');
+      doc.text(`${this.destinataire || this.destinataire}`, 70, y);
+    }
+
+    y += 10;
+    doc.setFont('helvetica', 'bold');
+    doc.text(`N° de reçu :`, 20, y);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`${transaction.receiptNumber}`, 70, y);
+
+    y += 10;
+    doc.setFont('helvetica', 'bold');
+    doc.text(`Solde actuel :`, 20, y);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`${transaction.newBalance || transaction.newSenderBalance} F CFA`, 70, y);
+
+    y += 10;
+    doc.setFont('helvetica', 'bold');
+    doc.text(`Date :`, 20, y);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`${new Date().toLocaleString()}`, 70, y);
+
+    y += 10;
+    doc.setDrawColor('#1e3a8a');
+    doc.setLineWidth(0.5);
+    doc.line(20, y, 190, y);
+
+    y += 10;
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'italic');
+    doc.setTextColor('#6b7280');
+    doc.text('Merci pour votre confiance !', 105, y + 10, { align: 'center' });
+
+    doc.save(`reçu-${type}.pdf`);
   }
 
 
